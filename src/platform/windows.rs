@@ -1791,6 +1791,15 @@ fn get_reg_of(subkey: &str, name: &str) -> String {
 }
 
 pub fn get_license_from_exe_name() -> ResultType<CustomServer> {
+    // First try to get from build-time environment variable
+    if let Some(config_str) = option_env!("RUSTDESK_CUSTOM_SERVER_CONFIG") {
+        if let Ok(custom) = crate::custom_server::get_custom_server_from_string(config_str) {
+            log::info!("Using custom server config from build-time environment variable");
+            return Ok(custom);
+        }
+    }
+    
+    // Fallback to exe name
     let mut exe = std::env::current_exe()?.to_str().unwrap_or("").to_owned();
     // if defined portable appname entry, replace original executable name with it.
     if let Ok(portable_exe) = std::env::var(PORTABLE_APPNAME_RUNTIME_ENV_KEY) {

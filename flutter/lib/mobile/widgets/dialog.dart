@@ -151,7 +151,7 @@ void showServerSettings(OverlayDialogManager dialogManager,
     void Function(VoidCallback) setState) async {
   Map<String, dynamic> options = {};
   try {
-    options = jsonDecode(await bind.mainGetOptions());
+    options = jsonDecode(await bind.mainGetOptionsmainGetOptions());
   } catch (e) {
     print("Invalid server config: $e");
   }

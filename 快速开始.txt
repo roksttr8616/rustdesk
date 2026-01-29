@@ -1,0 +1,133 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                    RustDesk 自定义服务器构建 - 快速开始                      ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+📋 修改内容
+─────────────────────────────────────────────────────────────────────────────
+✅ 修复了使用自建服务器时 "deadline has elapsed" 超时错误
+✅ 支持从环境变量读取服务器配置
+✅ 集成 GitHub Actions 自动构建
+✅ 支持 Windows, macOS, iOS, Linux, Android 全平台
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🚀 方式一：本地构建
+─────────────────────────────────────────────────────────────────────────────
+
+Windows PowerShell:
+  $env:RUSTDESK_CUSTOM_SERVER="==Qfi0zdHdlVBdWe4sCc4FHaiNlMqNkaQF1ZxgVMDZHOlZ3dBVVVJV0boNXYzgTNiojI5V2aiwiIyVmdyV2ctkGch1yazVGZ0NXdy9CcvRnLzVXbzhmL09yL6MHc0RHaiojIpBXYiwiI3ETMxIjOw9GduMXdtNHauQnI6ISehxWZyJCLiYTMxEjM6A3b05yc112co5CdiojI0N3boJye"
+  python build.py --portable --hwcodec --flutter --vram
+
+macOS/Linux:
+  export RUSTDESK_CUSTOM_SERVER="==Qfi0zdHdlVBdWe4sCc4FHaiNlMqNkaQF1ZxgVMDZHOlZ3dBVVVJV0boNXYzgTNiojI5V2aiwiIyVmdyV2ctkGch1yazVGZ0NXdy9CcvRnLzVXbzhmL09yL6MHc0RHaiojIpBXYiwiI3ETMxIjOw9GduMXdtNHauQnI6ISehxWZyJCLiYTMxEjM6A3b05yc112co5CdiojI0N3boJye"
+  python3 build.py --flutter --hwcodec
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🤖 方式二：GitHub Actions 自动构建（推荐）
+─────────────────────────────────────────────────────────────────────────────
+
+步骤 1 - 配置 Secret：
+  1. 打开 GitHub 仓库
+  2. Settings → Secrets and variables → Actions
+  3. 点击 "New repository secret"
+  4. 填写：
+     Name:   RUSTDESK_CUSTOM_SERVER
+     Secret: ==Qfi0zdHdlVBdWe4sCc4FHaiNlMqNkaQF1ZxgVMDZHOlZ3dBVVVJV0boNXYzgTNiojI5V2aiwiIyVmdyV2ctkGch1yazVGZ0NXdy9CcvRnLzVXbzhmL09yL6MHc0RHaiojIpBXYiwiI3ETMxIjOw9GduMXdtNHauQnI6ISehxWZyJCLiYTMxEjM6A3b05yc112co5CdiojI0N3boJye
+             （替换为您自己的配置）
+
+步骤 2 - 触发构建：
+  1. 进入 Actions 标签页
+  2. 选择 "Build the flutter version of the RustDesk"
+  3. 点击 "Run workflow"
+  4. 选择分支（如 master）
+  5. 点击 "Run workflow" 按钮
+
+步骤 3 - 下载产物：
+  1. 等待构建完成（约 30-60 分钟）
+  2. 滚动到页面底部
+  3. 在 Artifacts 部分下载对应平台的安装包
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📦 构建产物下载
+─────────────────────────────────────────────────────────────────────────────
+平台              文件名示例                              大小
+─────────────────────────────────────────────────────────────────────────────
+Windows x64       rustdesk-1.4.5-windows-x86_64.zip      ~80 MB
+Windows x86       rustdesk-1.4.5-windows-x86.zip         ~70 MB
+macOS Intel       rustdesk-1.4.5-macos-x86_64.dmg        ~90 MB
+macOS M1/M2       rustdesk-1.4.5-macos-aarch64.dmg       ~85 MB
+iOS               rustdesk-1.4.5.ipa                     ~60 MB
+Linux x64         rustdesk-1.4.5-linux-x86_64.deb        ~70 MB
+Android           rustdesk-1.4.5.apk                     ~50 MB
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ 验证构建
+─────────────────────────────────────────────────────────────────────────────
+
+构建时检查：
+  编译输出中应看到：
+  → cargo:warning=Building with custom server config
+
+运行时验证：
+  程序日志中应包含：
+  → Using custom server config from build-time environment variable
+
+═══════════════════════════════════════════════════════════════════════════════
+
+⏱️ 预计构建时间
+─────────────────────────────────────────────────────────────────────────────
+Windows    30-45 分钟
+macOS      40-60 分钟
+iOS        35-50 分钟
+Linux      25-40 分钟
+Android    30-50 分钟
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📚 详细文档
+─────────────────────────────────────────────────────────────────────────────
+完整技术文档：      CUSTOM_SERVER_BUILD.md
+GitHub Actions:     GITHUB_ACTIONS_构建说明.md
+修改总结：          修改总结.md
+
+═══════════════════════════════════════════════════════════════════════════════
+
+❓ 常见问题
+─────────────────────────────────────────────────────────────────────────────
+
+Q: 构建失败提示 "Secret not found"？
+A: 检查 GitHub Secrets 是否正确添加了 RUSTDESK_CUSTOM_SERVER
+
+Q: 构建成功但不使用自定义服务器？
+A: 检查 Secret 值是否正确，查看构建日志是否有警告信息
+
+Q: 如何只构建特定平台？
+A: 在 .github/workflows/flutter-build.yml 中注释掉不需要的 job
+
+Q: 首次构建为什么这么慢？
+A: 需要下载依赖，后续构建会使用缓存，速度更快
+
+═══════════════════════════════════════════════════════════════════════════════
+
+⚠️ 重要提示
+─────────────────────────────────────────────────────────────────────────────
+• 不要将服务器配置字符串提交到公开仓库
+• 使用 GitHub Secrets 存储敏感信息
+• 定期更换服务器密钥
+• 首次构建建议使用手动触发方式
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎯 修改的文件
+─────────────────────────────────────────────────────────────────────────────
+src/ui_session_interface.rs          # 核心修复（超时问题）
+build.rs                              # 支持环境变量配置
+src/platform/windows.rs               # Windows 平台优化
+.github/workflows/flutter-build.yml   # CI/CD 自动构建
+
+═══════════════════════════════════════════════════════════════════════════════
+
+需要帮助？查看详细文档或提交 Issue！

@@ -79,6 +79,13 @@ fn install_android_deps() {
 
 fn main() {
     hbb_common::gen_version();
+    
+    // Read custom server config from environment variable at build time
+    if let Ok(custom_server) = std::env::var("RUSTDESK_CUSTOM_SERVER") {
+        println!("cargo:rustc-env=RUSTDESK_CUSTOM_SERVER_CONFIG={}", custom_server);
+        println!("cargo:warning=Building with custom server config");
+    }
+    
     install_android_deps();
     #[cfg(all(windows, feature = "inline"))]
     build_manifest();
