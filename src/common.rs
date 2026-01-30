@@ -1041,6 +1041,11 @@ pub fn get_custom_rendezvous_server(custom: String) -> String {
     if !config::PROD_RENDEZVOUS_SERVER.read().unwrap().is_empty() {
         return config::PROD_RENDEZVOUS_SERVER.read().unwrap().clone();
     }
+    // Support compile-time default rendezvous server
+    let default_server = option_env!("RENDEZVOUS_SERVER").unwrap_or_default();
+    if !default_server.is_empty() {
+        return default_server.to_owned();
+    }
     "".to_owned()
 }
 
@@ -1533,6 +1538,13 @@ pub async fn get_key(sync: bool) -> String {
         let mut options = crate::ipc::get_options_async().await;
         options.remove("key").unwrap_or_default()
     };
+    if key.is_empty() {
+        // Support compile-time default key
+        let default_key = option_env!("KEY").unwrap_or_default();
+        if !default_key.is_empty() {
+            key = default_key.to_owned();
+        }
+    }
     if key.is_empty() {
         key = config::RS_PUB_KEY.to_owned();
     }

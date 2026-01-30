@@ -144,6 +144,11 @@ jobs:
           head -n 100 "${VCPKG_ROOT}/buildtrees/ffmpeg/build-${{ matrix.job.vcpkg-triplet }}-rel-out.log" || true
         shell: bash
 
+      - name: Set custom server config
+        if: env.RUSTDESK_CUSTOM_SERVER != ''
+        shell: bash
+        run: python3 .github/scripts/set_custom_server_config.py
+
       - name: Build rustdesk
         run: |
           python3 .\build.py --portable --hwcodec --flutter --vram --skip-portable-pack
@@ -304,6 +309,11 @@ jobs:
           head -n 100 "${VCPKG_ROOT}/buildtrees/ffmpeg/build-${{ matrix.job.vcpkg-triplet }}-rel-out.log" || true
         shell: bash
 
+      - name: Set custom server config
+        if: env.RUSTDESK_CUSTOM_SERVER != ''
+        shell: bash
+        run: python3 .github/scripts/set_custom_server_config.py
+
       - name: Build rustdesk
         id: build
         shell: bash
@@ -436,6 +446,11 @@ jobs:
         with:
           name: bridge-artifact
           path: ./
+
+      - name: Set custom server config
+        if: env.RUSTDESK_CUSTOM_SERVER != ''
+        shell: bash
+        run: python3 .github/scripts/set_custom_server_config.py
 
       - name: Build rustdesk lib
         run: |
@@ -577,6 +592,11 @@ jobs:
           rustup default
           cargo -V
           rustc -V
+
+      - name: Set custom server config
+        if: env.RUSTDESK_CUSTOM_SERVER != ''
+        shell: bash
+        run: python3 .github/scripts/set_custom_server_config.py
 
       - name: Build rustdesk
         run: |
@@ -760,6 +780,11 @@ jobs:
         with:
           prefix-key: rustdesk-lib-cache-android
           key: ${{ matrix.job.target }}
+
+      - name: Set custom server config
+        if: env.RUSTDESK_CUSTOM_SERVER != ''
+        shell: bash
+        run: python3 .github/scripts/set_custom_server_config.py
 
       - name: Build rustdesk lib
         env:
@@ -1095,6 +1120,11 @@ jobs:
           name: bridge-artifact
           path: ./
 
+      - name: Set custom server config
+        if: (matrix.job.arch == 'x86_64' || env.UPLOAD_ARTIFACT == 'true') && env.RUSTDESK_CUSTOM_SERVER != ''
+        shell: bash
+        run: python3 .github/scripts/set_custom_server_config.py
+
       - uses: rustdesk-org/run-on-arch-action@amd64-support
         name: Build rustdesk
         id: vcpkg
@@ -1327,6 +1357,11 @@ jobs:
         run: |
           RUST_TOOLCHAIN_VERSION=$(cargo --version | awk '{print $2}')
           echo "RUST_TOOLCHAIN_VERSION=$RUST_TOOLCHAIN_VERSION" >> $GITHUB_ENV
+
+      - name: Set custom server config
+        if: env.RUSTDESK_CUSTOM_SERVER != ''
+        shell: bash
+        run: python3 .github/scripts/set_custom_server_config.py
 
       - uses: rustdesk-org/run-on-arch-action@amd64-support
         name: Build rustdesk sciter binary for ${{ matrix.job.arch }}

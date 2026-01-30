@@ -743,6 +743,13 @@ impl RendezvousMediator {
             relay_server = provided_by_rendezvous_server;
         }
         if relay_server.is_empty() {
+            // Support compile-time default relay server
+            let default_relay = option_env!("RELAY_SERVER").unwrap_or_default();
+            if !default_relay.is_empty() {
+                relay_server = default_relay.to_owned();
+            }
+        }
+        if relay_server.is_empty() {
             relay_server = crate::increase_port(&self.host, 1);
         }
         relay_server
