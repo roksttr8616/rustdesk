@@ -20,7 +20,7 @@ def main() -> None:
         import base64
         import json
     except ImportError as e:
-        print(f"✗ 缺少依赖: {e}", file=sys.stderr)
+        print(f"[ERROR] Missing dependency: {e}", file=sys.stderr)
         sys.exit(1)
 
     try:
@@ -32,7 +32,7 @@ def main() -> None:
         decoded_bytes = base64.urlsafe_b64decode(reversed_str)
         config = json.loads(decoded_bytes.decode("utf-8"))
     except Exception as e:
-        print(f"✗ 解析配置失败: {e}", file=sys.stderr)
+        print(f"[ERROR] Failed to parse config: {e}", file=sys.stderr)
         sys.exit(1)
 
     id_server = config.get("host", "")
@@ -53,11 +53,11 @@ def main() -> None:
         if key:
             f.write(f'KEY = "{key}"\n')
 
-    print("✓ 已设置自定义服务器配置")
-    print(f"  ID服务器: {id_server}")
-    print(f"  中继服务器: {relay_server}")
-    print(f"  API服务器: {api_server}")
-    print(f"  密钥: {'已设置' if key else '未设置'}")
+    print("[OK] Custom server config set")
+    print(f"  RENDEZVOUS_SERVER: {id_server}")
+    print(f"  RELAY_SERVER: {relay_server}")
+    print(f"  API_SERVER: {api_server}")
+    print(f"  KEY: {'(set)' if key else '(not set)'}")
 
 
 if __name__ == "__main__":
